@@ -5,28 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Software Engineering Department - Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .login-bg {
-            background: linear-gradient(rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-gray-50 min-h-screen">
     <!-- Login Page -->
@@ -37,12 +16,17 @@
                     <!-- Image Section -->
                     <div class="md:w-1/2 bg-gray-200 flex items-center justify-center p-8">
                         <div class="text-center">
-                            <!-- IICT Building Image Placeholder -->
-                            <div class="w-full h-64 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg flex items-center justify-center mb-4">
-                                <div class="text-center">
-                                    <div class="text-6xl mb-4">🏛️</div>
-                                    <p class="text-gray-600 font-semibold">IICT Building</p>
-                                    <p class="text-sm text-gray-500 mt-2">Institute of Information & Communication Technology</p>
+                            <!-- IICT Building Image -->
+                            <div class="w-full h-64 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg overflow-hidden mb-4">
+                                <img src="iict.jpg" alt="IICT Building - Institute of Information & Communication Technology" 
+                                     class="w-full h-full object-cover"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg flex items-center justify-center" style="display: none;">
+                                    <div class="text-center">
+                                        <div class="text-6xl mb-4">🏛️</div>
+                                        <p class="text-gray-600 font-semibold">IICT Building</p>
+                                        <p class="text-sm text-gray-500 mt-2">Institute of Information & Communication Technology</p>
+                                    </div>
                                 </div>
                             </div>
                             <h2 class="text-2xl font-bold text-gray-800 mb-2">Welcome to</h2>
@@ -98,6 +82,9 @@
                             <p class="text-sm text-gray-500">
                                 Need help? Contact your department administrator
                             </p>
+                            <p class="text-xs text-gray-400 mt-2">
+                                This website is owned by SUST SWE-23
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -108,20 +95,22 @@
     <!-- Main Application (Hidden Initially) -->
     <div id="main-app" class="hidden">
         <!-- Header -->
-        <header class="gradient-bg text-white shadow-lg">
+        <header class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-lg">
             <div class="container mx-auto px-6 py-8">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h1 class="text-4xl md:text-6xl font-bold mb-4">Software Engineering Department</h1>
-                        <p class="text-xl md:text-2xl opacity-90">Excellence in Software Development Education</p>
-                    </div>
-                    <div class="text-right">
+                <div class="flex justify-between items-center mb-8">
+                    <div class="text-right ml-auto">
                         <p class="text-lg">Welcome, <span id="welcomeName" class="font-semibold"></span></p>
                         <p class="text-sm opacity-75">Reg: <span id="welcomeReg"></span></p>
                         <button onclick="logout()" class="mt-2 bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-sm transition-colors">
                             Logout
                         </button>
                     </div>
+                </div>
+                
+                <!-- Department Header -->
+                <div class="text-center mb-8">
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold mb-6">Software Engineering Department</h1>
+                    <p class="text-2xl md:text-3xl lg:text-4xl opacity-90">Excellence in Software Development Education</p>
                 </div>
                 
                 <!-- Social Links -->
@@ -237,30 +226,8 @@
                     <h2 id="course-title" class="text-3xl font-bold text-gray-800"></h2>
                 </div>
                 
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openDriveLink('books')">
-                        <div class="text-center">
-                            <div class="text-5xl mb-4">📚</div>
-                            <h3 class="text-xl font-bold text-gray-800">Books</h3>
-                            <p class="text-gray-600 mt-2">Textbooks and References</p>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openDriveLink('notes')">
-                        <div class="text-center">
-                            <div class="text-5xl mb-4">📝</div>
-                            <h3 class="text-xl font-bold text-gray-800">Notes</h3>
-                            <p class="text-gray-600 mt-2">Lecture Notes and Materials</p>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openDriveLink('questions')">
-                        <div class="text-center">
-                            <div class="text-5xl mb-4">❓</div>
-                            <h3 class="text-xl font-bold text-gray-800">Previous Questions</h3>
-                            <p class="text-gray-600 mt-2">Past Exam Papers</p>
-                        </div>
-                    </div>
+                <div id="course-materials" class="grid md:grid-cols-3 gap-8">
+                    <!-- Course materials will be populated here -->
                 </div>
             </div>
         </main>
@@ -363,23 +330,40 @@
             }
         };
 
-        // Login functionality
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize login form
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const name = document.getElementById('studentName').value.trim();
+                    const regNumber = document.getElementById('registrationNumber').value.trim();
+                    
+                    if (name && regNumber) {
+                        // Store user info
+                        sessionStorage.setItem('studentName', name);
+                        sessionStorage.setItem('registrationNumber', regNumber);
+                        
+                        // Show main app
+                        document.getElementById('login-page').classList.add('hidden');
+                        document.getElementById('main-app').classList.remove('hidden');
+                        
+                        // Update welcome message
+                        document.getElementById('welcomeName').textContent = name;
+                        document.getElementById('welcomeReg').textContent = regNumber;
+                    }
+                });
+            }
             
-            const name = document.getElementById('studentName').value.trim();
-            const regNumber = document.getElementById('registrationNumber').value.trim();
+            // Check if user is already logged in
+            const name = sessionStorage.getItem('studentName');
+            const regNumber = sessionStorage.getItem('registrationNumber');
             
             if (name && regNumber) {
-                // Store user info
-                sessionStorage.setItem('studentName', name);
-                sessionStorage.setItem('registrationNumber', regNumber);
-                
-                // Show main app
                 document.getElementById('login-page').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
-                
-                // Update welcome message
                 document.getElementById('welcomeName').textContent = name;
                 document.getElementById('welcomeReg').textContent = regNumber;
             }
@@ -399,19 +383,6 @@
             // Reset views
             showMain();
         }
-
-        // Check if user is already logged in
-        window.addEventListener('load', function() {
-            const name = sessionStorage.getItem('studentName');
-            const regNumber = sessionStorage.getItem('registrationNumber');
-            
-            if (name && regNumber) {
-                document.getElementById('login-page').classList.add('hidden');
-                document.getElementById('main-app').classList.remove('hidden');
-                document.getElementById('welcomeName').textContent = name;
-                document.getElementById('welcomeReg').textContent = regNumber;
-            }
-        });
 
         function showMain() {
             document.getElementById('main-view').classList.remove('hidden');
@@ -468,7 +439,7 @@
             const coursesGrid = document.getElementById('courses-grid');
             const courses = curriculum[year][semester];
             
-            coursesGrid.innerHTML = courses.map(course => `
+            let coursesHTML = courses.map(course => `
                 <div class="bg-white rounded-xl shadow-lg p-6 card-hover cursor-pointer" onclick="showCourse('${course.code}', '${course.name}')">
                     <div class="flex justify-between items-start">
                         <div class="flex-1">
@@ -484,6 +455,50 @@
                     </div>
                 </div>
             `).join('');
+            
+            // Add year-wise question folders for First Year Semester 1
+            if (year === 1 && semester === 1) {
+                coursesHTML += `
+                    <div class="col-span-full">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Question Papers by Year</h3>
+                        <div class="grid md:grid-cols-4 gap-4">
+                            <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl shadow-lg p-6 card-hover cursor-pointer" onclick="openYearQuestions('2023')">
+                                <div class="text-center">
+                                    <div class="text-3xl mb-2">📋</div>
+                                    <h4 class="text-lg font-bold">2023</h4>
+                                    <p class="text-sm opacity-90">Latest Questions</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl shadow-lg p-6 card-hover cursor-pointer" onclick="openYearQuestions('2022')">
+                                <div class="text-center">
+                                    <div class="text-3xl mb-2">📋</div>
+                                    <h4 class="text-lg font-bold">2022</h4>
+                                    <p class="text-sm opacity-90">Previous Year</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl shadow-lg p-6 card-hover cursor-pointer" onclick="openYearQuestions('2021')">
+                                <div class="text-center">
+                                    <div class="text-3xl mb-2">📋</div>
+                                    <h4 class="text-lg font-bold">2021</h4>
+                                    <p class="text-sm opacity-90">Archive</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl shadow-lg p-6 card-hover cursor-pointer" onclick="openYearQuestions('2020')">
+                                <div class="text-center">
+                                    <div class="text-3xl mb-2">📋</div>
+                                    <h4 class="text-lg font-bold">2020</h4>
+                                    <p class="text-sm opacity-90">Archive</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            coursesGrid.innerHTML = coursesHTML;
         }
 
         function showCourse(courseCode, courseName) {
@@ -492,15 +507,61 @@
             document.getElementById('course-view').classList.remove('hidden');
             
             document.getElementById('course-title').textContent = courseName;
-        }
-
-        function openDriveLink(type) {
+            
             // Course-specific Google Drive links
             const courseLinks = {
                 'SWE0613-1121': {
                     books: 'https://drive.google.com/drive/folders/1K_obv2LUf7qpFCXDGj6bp0dAi-DytQrx?usp=drive_link',
                     notes: 'https://drive.google.com/drive/folders/1WwT0lgUm-LIxwUrzHmpdiR0HE6efXRM6?usp=drive_link',
                     questions: 'https://drive.google.com/drive/folders/1-WL990uxd5Nwg9fQG-YxCRGwLbWaTDGS?usp=sharing'
+                },
+                'SWE0541-1123': {
+                    books: 'https://drive.google.com/drive/folders/1-nHSblj2qIA2HjUb-CvCDrno3rSq23PG?usp=sharing',
+                    notes: 'https://drive.google.com/drive/folders/1MBxWRbY986QI_HUN68NdhWODCqG5aeKC?usp=drive_link',
+                    questions: 'https://drive.google.com/drive/folders/1b4Gj3PcuyDpkypidrmFnPXoKAQTscQDz?usp=drive_link'
+                }
+            };
+            
+            // Update course materials display - regular layout for all courses
+            const courseMaterials = document.getElementById('course-materials');
+            courseMaterials.innerHTML = `
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openDriveLink('books')">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">📚</div>
+                        <h3 class="text-xl font-bold text-gray-800">Books</h3>
+                        <p class="text-gray-600 mt-2">Textbooks and References</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openDriveLink('notes')">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">📝</div>
+                        <h3 class="text-xl font-bold text-gray-800">Notes</h3>
+                        <p class="text-gray-600 mt-2">Lecture Notes and Materials</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openDriveLink('questions')">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">❓</div>
+                        <h3 class="text-xl font-bold text-gray-800">Previous Questions</h3>
+                        <p class="text-gray-600 mt-2">Past Exam Papers</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openDriveLink(type) {
+            const courseLinks = {
+                'SWE0613-1121': {
+                    books: 'https://drive.google.com/drive/folders/1K_obv2LUf7qpFCXDGj6bp0dAi-DytQrx?usp=drive_link',
+                    notes: 'https://drive.google.com/drive/folders/1WwT0lgUm-LIxwUrzHmpdiR0HE6efXRM6?usp=drive_link',
+                    questions: 'https://drive.google.com/drive/folders/1-WL990uxd5Nwg9fQG-YxCRGwLbWaTDGS?usp=sharing'
+                },
+                'SWE0541-1123': {
+                    books: 'https://drive.google.com/drive/folders/1-nHSblj2qIA2HjUb-CvCDrno3rSq23PG?usp=sharing',
+                    notes: 'https://drive.google.com/drive/folders/1MBxWRbY986QI_HUN68NdhWODCqG5aeKC?usp=drive_link',
+                    questions: 'https://drive.google.com/drive/folders/1b4Gj3PcuyDpkypidrmFnPXoKAQTscQDz?usp=drive_link'
                 }
             };
             
@@ -514,6 +575,20 @@
             const url = courseLinks[currentCourse] ? courseLinks[currentCourse][type] : defaultLinks[type];
             window.open(url, '_blank', 'noopener,noreferrer');
         }
+
+        function openYearQuestions(year) {
+            // Year-wise question folders for First Year Semester 1
+            const yearQuestions = {
+                '2023': 'https://drive.google.com/drive/folders/1wn6KY31zZFjMNR_xhJN2mV72ZNJNhSrW?usp=drive_link',
+                '2022': 'https://drive.google.com/drive/folders/1nXT5blynF4AOd5mL5aCwEXbwbYXon8cp?usp=drive_link',
+                '2021': 'https://drive.google.com/drive/folders/1TnLtsiPZM13OUH2fdgqD5meIcICjVcZN?usp=drive_link',
+                '2020': 'https://drive.google.com/drive/folders/1nuODYE9Sc5bZqqfDbSwvb-EGB8rMitcq?usp=drive_link'
+            };
+            
+            if (yearQuestions[year]) {
+                window.open(yearQuestions[year], '_blank', 'noopener,noreferrer');
+            }
+        }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9828602cf634a494',t:'MTc1ODQ0NTI2My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98287c99062da48e',t:'MTc1ODQ0NjQyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
