@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Engineering Department</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to the external CSS file -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-8">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Software Engineering Department</h1>
+                <p class="text-xl md:text-2xl opacity-90">Excellence in Software Development Education</p>
+            </div>
+            
+            <!-- Social Links -->
+            <div class="flex justify-center space-x-6 mt-8">
+                <a href="https://facebook.com/swesocietysust" target="_blank" rel="noopener noreferrer" 
+                   class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold transition-colors duration-300 flex items-center space-x-2">
+                    <span>📘</span>
+                    <span>Facebook Page</span>
+                </a>
+                <a href="https://www.sust.edu/institutes/IICT" target="_blank" rel="noopener noreferrer"
+                   class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-semibold transition-colors duration-300 flex items-center space-x-2">
+                    <span>🌐</span>
+                    <span>Official Website</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <div id="main-view" class="fade-in">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Academic Years</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- First Year -->
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="showYear(1)">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">🎓</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">First Year</h3>
+                        <p class="text-gray-600">Foundation Courses</p>
+                        <div class="mt-4 text-sm text-gray-500">
+                            <p>Semester 1: 18.0 Credits</p>
+                            <p>Semester 2: 22.0 Credits</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second Year -->
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="showYear(2)">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">💻</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Second Year</h3>
+                        <p class="text-gray-600">Core Programming</p>
+                        <div class="mt-4 text-sm text-gray-500">
+                            <p>Semester 1: 22.5 Credits</p>
+                            <p>Semester 2: 19.5 Credits</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Third Year -->
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="showYear(3)">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">🚀</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Third Year</h3>
+                        <p class="text-gray-600">Advanced Topics</p>
+                        <div class="mt-4 text-sm text-gray-500">
+                            <p>Semester 1: 20.5 Credits</p>
+                            <p>Semester 2: 19.5 Credits</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fourth Year -->
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="showYear(4)">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">🏆</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Fourth Year</h3>
+                        <p class="text-gray-600">Specialization</p>
+                        <div class="mt-4 text-sm text-gray-500">
+                            <p>Semester 1: 19.5 Credits</p>
+                            <p>Semester 2: 19.0 Credits</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Further HTML structure for the Year, Semester, and Course views go here -->
+    </main>
+
+    <script src="script.js"></script> <!-- Link to the external JavaScript file -->
+</body>
+</html>
