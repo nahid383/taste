@@ -3,125 +3,517 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Software Engineering Department</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to the external CSS file -->
+    <title>Software Engineering Department - Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .login-bg {
+            background: linear-gradient(rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
+        }
+    </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-    <!-- Header -->
-    <header class="gradient-bg text-white shadow-lg">
-        <div class="container mx-auto px-6 py-8">
-            <div class="text-center">
-                <h1 class="text-4xl md:text-6xl font-bold mb-4">Software Engineering Department</h1>
-                <p class="text-xl md:text-2xl opacity-90">Excellence in Software Development Education</p>
+    <!-- Login Page -->
+    <div id="login-page" class="min-h-screen login-bg flex items-center justify-center px-6">
+        <div class="max-w-4xl w-full">
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                <div class="md:flex">
+                    <!-- Image Section -->
+                    <div class="md:w-1/2 bg-gray-200 flex items-center justify-center p-8">
+                        <div class="text-center">
+                            <!-- IICT Building Image Placeholder -->
+                            <div class="w-full h-64 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg flex items-center justify-center mb-4">
+                                <div class="text-center">
+                                    <div class="text-6xl mb-4">🏛️</div>
+                                    <p class="text-gray-600 font-semibold">IICT Building</p>
+                                    <p class="text-sm text-gray-500 mt-2">Institute of Information & Communication Technology</p>
+                                </div>
+                            </div>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-2">Welcome to</h2>
+                            <h3 class="text-xl text-gray-600">Software Engineering Department</h3>
+                        </div>
+                    </div>
+                    
+                    <!-- Login Form Section -->
+                    <div class="md:w-1/2 p-8">
+                        <div class="text-center mb-8">
+                            <h1 class="text-3xl font-bold text-gray-800 mb-2">Student Login</h1>
+                            <p class="text-gray-600">Enter your details to access course materials</p>
+                        </div>
+                        
+                        <form id="loginForm" class="space-y-6">
+                            <div>
+                                <label for="studentName" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Full Name
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="studentName" 
+                                    name="studentName"
+                                    required
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                                    placeholder="Enter your full name"
+                                >
+                            </div>
+                            
+                            <div>
+                                <label for="registrationNumber" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Registration Number
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="registrationNumber" 
+                                    name="registrationNumber"
+                                    required
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                                    placeholder="e.g., 2021831001"
+                                >
+                            </div>
+                            
+                            <button 
+                                type="submit"
+                                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105"
+                            >
+                                Access Course Materials
+                            </button>
+                        </form>
+                        
+                        <div class="mt-8 text-center">
+                            <p class="text-sm text-gray-500">
+                                Need help? Contact your department administrator
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Main Application (Hidden Initially) -->
+    <div id="main-app" class="hidden">
+        <!-- Header -->
+        <header class="gradient-bg text-white shadow-lg">
+            <div class="container mx-auto px-6 py-8">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-4xl md:text-6xl font-bold mb-4">Software Engineering Department</h1>
+                        <p class="text-xl md:text-2xl opacity-90">Excellence in Software Development Education</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg">Welcome, <span id="welcomeName" class="font-semibold"></span></p>
+                        <p class="text-sm opacity-75">Reg: <span id="welcomeReg"></span></p>
+                        <button onclick="logout()" class="mt-2 bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-sm transition-colors">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Social Links -->
+                <div class="flex justify-center space-x-6 mt-8">
+                    <a href="https://www.facebook.com/swesocietysust" target="_blank" rel="noopener noreferrer" 
+                       class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold transition-colors duration-300 flex items-center space-x-2">
+                        <span>📘</span>
+                        <span>Facebook Page</span>
+                    </a>
+                    <a href="https://www.sust.edu/institutes/IICT" target="_blank" rel="noopener noreferrer"
+                       class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-semibold transition-colors duration-300 flex items-center space-x-2">
+                        <span>🌐</span>
+                        <span>Official Website</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-6 py-12">
+            <div id="main-view" class="fade-in">
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Academic Years</h2>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- First Year -->
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="showYear(1)">
+                        <div class="text-center">
+                            <div class="text-5xl mb-4">🎓</div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">First Year</h3>
+                            <p class="text-gray-600">Foundation Courses</p>
+                            <div class="mt-4 text-sm text-gray-500">
+                                <p>Semester 1: 18.0 Credits</p>
+                                <p>Semester 2: 22.0 Credits</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Second Year -->
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="showYear(2)">
+                        <div class="text-center">
+                            <div class="text-5xl mb-4">💻</div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">Second Year</h3>
+                            <p class="text-gray-600">Core Programming</p>
+                            <div class="mt-4 text-sm text-gray-500">
+                                <p>Semester 1: 22.5 Credits</p>
+                                <p>Semester 2: 19.5 Credits</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Third Year -->
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="showYear(3)">
+                        <div class="text-center">
+                            <div class="text-5xl mb-4">🚀</div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">Third Year</h3>
+                            <p class="text-gray-600">Advanced Topics</p>
+                            <div class="mt-4 text-sm text-gray-500">
+                                <p>Semester 1: 20.5 Credits</p>
+                                <p>Semester 2: 19.5 Credits</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fourth Year -->
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="showYear(4)">
+                        <div class="text-center">
+                            <div class="text-5xl mb-4">🏆</div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">Fourth Year</h3>
+                            <p class="text-gray-600">Specialization</p>
+                            <div class="mt-4 text-sm text-gray-500">
+                                <p>Semester 1: 19.5 Credits</p>
+                                <p>Semester 2: 19.0 Credits</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Year View -->
+            <div id="year-view" class="hidden fade-in">
+                <div class="flex items-center mb-8">
+                    <button onclick="showMain()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg mr-4 transition-colors duration-300">
+                        ← Back
+                    </button>
+                    <h2 id="year-title" class="text-3xl font-bold text-gray-800"></h2>
+                </div>
+                
+                <div id="semester-grid" class="grid md:grid-cols-2 gap-8">
+                    <!-- Semesters will be populated here -->
+                </div>
+            </div>
+
+            <!-- Semester View -->
+            <div id="semester-view" class="hidden fade-in">
+                <div class="flex items-center mb-8">
+                    <button onclick="showYear(currentYear)" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg mr-4 transition-colors duration-300">
+                        ← Back
+                    </button>
+                    <h2 id="semester-title" class="text-3xl font-bold text-gray-800"></h2>
+                </div>
+                
+                <div id="courses-grid" class="grid gap-6">
+                    <!-- Courses will be populated here -->
+                </div>
+            </div>
+
+            <!-- Course View -->
+            <div id="course-view" class="hidden fade-in">
+                <div class="flex items-center mb-8">
+                    <button onclick="showSemester(currentYear, currentSemester)" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg mr-4 transition-colors duration-300">
+                        ← Back
+                    </button>
+                    <h2 id="course-title" class="text-3xl font-bold text-gray-800"></h2>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openDriveLink('books')">
+                        <div class="text-center">
+                            <div class="text-5xl mb-4">📚</div>
+                            <h3 class="text-xl font-bold text-gray-800">Books</h3>
+                            <p class="text-gray-600 mt-2">Textbooks and References</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openDriveLink('notes')">
+                        <div class="text-center">
+                            <div class="text-5xl mb-4">📝</div>
+                            <h3 class="text-xl font-bold text-gray-800">Notes</h3>
+                            <p class="text-gray-600 mt-2">Lecture Notes and Materials</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openDriveLink('questions')">
+                        <div class="text-center">
+                            <div class="text-5xl mb-4">❓</div>
+                            <h3 class="text-xl font-bold text-gray-800">Previous Questions</h3>
+                            <p class="text-gray-600 mt-2">Past Exam Papers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let currentYear = 1;
+        let currentSemester = 1;
+        let currentCourse = '';
+
+        const curriculum = {
+            1: {
+                1: [
+                    { code: 'SWE0613-1121', name: 'Structured Programming Language', credits: 3.0 },
+                    { code: 'SWE0613-1122', name: 'Structured Programming Language Lab', credits: 1.5 },
+                    { code: 'SWE0541-1123', name: 'Discrete Mathematics', credits: 3.0 },
+                    { code: 'EEE0712-1101W', name: 'Basic Electrical and Electronic Circuits', credits: 3.0 },
+                    { code: 'EEE0712-1102W', name: 'Basic Electrical and Electronic Circuits Lab', credits: 1.5 },
+                    { code: 'MAT0541-1105W', name: 'Coordinate Geometry and Calculus', credits: 3.0 },
+                    { code: 'ENG0231-1101W', name: 'Effective Communication in English', credits: 2.0 },
+                    { code: 'ENG0231-1102W', name: 'English Language Lab 1', credits: 1.0 }
+                ],
+                2: [
+                    { code: 'SWE0613-1225', name: 'Introduction to Software Engineering', credits: 3.0 },
+                    { code: 'SWE0613-1227', name: 'Data Structure', credits: 3.0 },
+                    { code: 'SWE0613-1228', name: 'Data Structure Lab', credits: 2.0 },
+                    { code: 'PHY0533-1203W', name: 'Mechanics, Wave, Heat & Thermodynamics', credits: 3.0 },
+                    { code: 'MAT0541-1207W', name: 'Linear and Abstract Algebra', credits: 3.0 },
+                    { code: 'STA0542-1201W', name: 'Basic Statistics', credits: 3.0 },
+                    { code: 'SOC0314-1203W', name: 'Sociology for Engineers', credits: 3.0 },
+                    { code: 'SWE0610-1250', name: 'Project Work-I', credits: 2.0 }
+                ]
+            },
+            2: {
+                1: [
+                    { code: 'SWE0613-2122', name: 'Introduction to Competitive Programming', credits: 2.0 },
+                    { code: 'SWE0613-2123', name: 'Object Oriented Programming', credits: 3.0 },
+                    { code: 'SWE0613-2124', name: 'Object Oriented Programming Language Lab', credits: 2.0 },
+                    { code: 'SWE0613-2125', name: 'Software Requirement Engineering', credits: 2.0 },
+                    { code: 'SWE0613-2126', name: 'Software Requirement Engineering Lab', credits: 1.5 },
+                    { code: 'CSE0613-2119W', name: 'Computer Architecture', credits: 3.0 },
+                    { code: 'STA0542-2101W', name: 'Probability', credits: 3.0 },
+                    { code: 'BUS0411-2101W', name: 'Cost and Management Accounting', credits: 3.0 },
+                    { code: 'ECO0311-2105W', name: 'Principles of Economics', credits: 3.0 }
+                ],
+                2: [
+                    { code: 'SWE0613-2227', name: 'Theory of Computation', credits: 2.0 },
+                    { code: 'SWE0613-2229', name: 'Algorithm Design & Analysis', credits: 3.0 },
+                    { code: 'SWE0613-2230', name: 'Algorithm Design & Analysis Lab', credits: 1.5 },
+                    { code: 'SWE0541-2231', name: 'Numerical Analysis', credits: 2.0 },
+                    { code: 'SWE0541-2232', name: 'Numerical Analysis Lab', credits: 1.5 },
+                    { code: 'SWE0613-2233', name: 'Operating Systems and System Programming', credits: 3.0 },
+                    { code: 'SWE0613-2234', name: 'Operating Systems and System Programming Lab', credits: 1.5 },
+                    { code: 'SWE0488-2235', name: 'Ethics and Cyber Law', credits: 2.0 },
+                    { code: 'SWE0688-2237', name: 'Management Information System', credits: 2.0 },
+                    { code: 'SWE0610-2250', name: 'Project Work –II', credits: 2.0 }
+                ]
+            },
+            3: {
+                1: [
+                    { code: 'SWE0613-3121', name: 'Software Architecture and Design Patterns', credits: 3.0 },
+                    { code: 'SWE0613-3122', name: 'Software Architecture and Design Patterns Lab', credits: 1.5 },
+                    { code: 'SWE0619-3123', name: 'Artificial Intelligence', credits: 3.0 },
+                    { code: 'SWE0619-3124', name: 'Artificial Intelligence Lab', credits: 1.5 },
+                    { code: 'SWE0612-3127', name: 'Database Management System', credits: 3.0 },
+                    { code: 'SWE0612-3128', name: 'Database Management System Lab', credits: 2.0 },
+                    { code: 'SWE0612-3130', name: 'Web Technologies', credits: 2.0 },
+                    { code: 'CSE0612-3113W', name: 'Computer Networking', credits: 3.0 },
+                    { code: 'CSE0612-3114W', name: 'Computer Networking Lab', credits: 1.5 }
+                ],
+                2: [
+                    { code: 'SWE0612-3225', name: 'Distributed System', credits: 2.0 },
+                    { code: 'SWE0612-3226', name: 'Distributed System Lab', credits: 1.5 },
+                    { code: 'SWE0613-3231', name: 'Software Usability and Metrics', credits: 2.0 },
+                    { code: 'SWE0613-3233', name: 'Software Verification and Validation', credits: 2.0 },
+                    { code: 'SWE0613-3234', name: 'Software Verification and Validation Lab', credits: 1.5 },
+                    { code: 'SWE0611-3242', name: 'Technical Writing And Presentation', credits: 2.0 },
+                    { code: 'SWE0619-3243', name: 'Machine Learning', credits: 3.0 },
+                    { code: 'SWE0619-3244', name: 'Machine Learning Lab', credits: 1.5 },
+                    { code: 'BUS0414-3201W', name: 'Entrepreneurship Development', credits: 2.0 },
+                    { code: 'SWE0610-3250', name: 'Project Work-III', credits: 2.0 }
+                ]
+            },
+            4: {
+                1: [
+                    { code: 'SWE0613-4125', name: 'Software Project Management', credits: 2.0 },
+                    { code: 'SWE0613-4126', name: 'Software Project Management Lab', credits: 1.0 },
+                    { code: 'SWE0612-4129', name: 'Information and Network Security', credits: 2.0 },
+                    { code: 'SWE0612-4130', name: 'Information and Network Security Lab', credits: 1.5 },
+                    { code: 'SWE0688-4131', name: 'Human Computer Interaction', credits: 3.0 },
+                    { code: 'SWE0688-4132', name: 'Human Computer Interaction Lab', credits: 1.5 },
+                    { code: 'SWE06**', name: 'Option', credits: 3.0 },
+                    { code: 'SWE06**', name: 'Option Lab', credits: 1.5 },
+                    { code: 'SWE0610-4150', name: 'Thesis/Project', credits: 4.0 }
+                ],
+                2: [
+                    { code: 'SWE0613-4220', name: 'Internship', credits: 18.0 },
+                    { code: 'SWE0610-4160', name: 'Comprehensive Viva Voce', credits: 1.0 }
+                ]
+            }
+        };
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            <!-- Social Links -->
-            <div class="flex justify-center space-x-6 mt-8">
-                <a href="https://facebook.com/swesocietysust" target="_blank" rel="noopener noreferrer" 
-                   class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold transition-colors duration-300 flex items-center space-x-2">
-                    <span>📘</span>
-                    <span>Facebook Page</span>
-                </a>
-                <a href="https://www.sust.edu/institutes/IICT" target="_blank" rel="noopener noreferrer"
-                   class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-semibold transition-colors duration-300 flex items-center space-x-2">
-                    <span>🌐</span>
-                    <span>Official Website</span>
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="container mx-auto px-6 py-12">
-        <div id="main-view" class="fade-in">
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Academic Years</h2>
+            const name = document.getElementById('studentName').value.trim();
+            const regNumber = document.getElementById('registrationNumber').value.trim();
             
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- First Year -->
-                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="showYear(1)">
+            if (name && regNumber) {
+                // Store user info
+                sessionStorage.setItem('studentName', name);
+                sessionStorage.setItem('registrationNumber', regNumber);
+                
+                // Show main app
+                document.getElementById('login-page').classList.add('hidden');
+                document.getElementById('main-app').classList.remove('hidden');
+                
+                // Update welcome message
+                document.getElementById('welcomeName').textContent = name;
+                document.getElementById('welcomeReg').textContent = regNumber;
+            }
+        });
+
+        // Logout functionality
+        function logout() {
+            sessionStorage.removeItem('studentName');
+            sessionStorage.removeItem('registrationNumber');
+            
+            document.getElementById('main-app').classList.add('hidden');
+            document.getElementById('login-page').classList.remove('hidden');
+            
+            // Reset form
+            document.getElementById('loginForm').reset();
+            
+            // Reset views
+            showMain();
+        }
+
+        // Check if user is already logged in
+        window.addEventListener('load', function() {
+            const name = sessionStorage.getItem('studentName');
+            const regNumber = sessionStorage.getItem('registrationNumber');
+            
+            if (name && regNumber) {
+                document.getElementById('login-page').classList.add('hidden');
+                document.getElementById('main-app').classList.remove('hidden');
+                document.getElementById('welcomeName').textContent = name;
+                document.getElementById('welcomeReg').textContent = regNumber;
+            }
+        });
+
+        function showMain() {
+            document.getElementById('main-view').classList.remove('hidden');
+            document.getElementById('year-view').classList.add('hidden');
+            document.getElementById('semester-view').classList.add('hidden');
+            document.getElementById('course-view').classList.add('hidden');
+        }
+
+        function showYear(year) {
+            currentYear = year;
+            document.getElementById('main-view').classList.add('hidden');
+            document.getElementById('year-view').classList.remove('hidden');
+            document.getElementById('semester-view').classList.add('hidden');
+            document.getElementById('course-view').classList.add('hidden');
+            
+            const yearNames = ['', 'First', 'Second', 'Third', 'Fourth'];
+            document.getElementById('year-title').textContent = `${yearNames[year]} Year`;
+            
+            const semesterGrid = document.getElementById('semester-grid');
+            semesterGrid.innerHTML = `
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="showSemester(${year}, 1)">
                     <div class="text-center">
-                        <div class="text-5xl mb-4">🎓</div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-2">First Year</h3>
-                        <p class="text-gray-600">Foundation Courses</p>
+                        <div class="text-5xl mb-4">📖</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Semester 1</h3>
+                        <p class="text-gray-600">${curriculum[year][1].length} Courses</p>
                         <div class="mt-4 text-sm text-gray-500">
-                            <p>Semester 1: 18.0 Credits</p>
-                            <p>Semester 2: 22.0 Credits</p>
+                            <p>Total Credits: ${curriculum[year][1].reduce((sum, course) => sum + course.credits, 0)}</p>
                         </div>
                     </div>
                 </div>
-
-                <!-- Second Year -->
-                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="showYear(2)">
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="showSemester(${year}, 2)">
                     <div class="text-center">
-                        <div class="text-5xl mb-4">💻</div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Second Year</h3>
-                        <p class="text-gray-600">Core Programming</p>
+                        <div class="text-5xl mb-4">📚</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Semester 2</h3>
+                        <p class="text-gray-600">${curriculum[year][2].length} Courses</p>
                         <div class="mt-4 text-sm text-gray-500">
-                            <p>Semester 1: 22.5 Credits</p>
-                            <p>Semester 2: 19.5 Credits</p>
+                            <p>Total Credits: ${curriculum[year][2].reduce((sum, course) => sum + course.credits, 0)}</p>
                         </div>
                     </div>
                 </div>
+            `;
+        }
 
-                <!-- Third Year -->
-                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="showYear(3)">
-                    <div class="text-center">
-                        <div class="text-5xl mb-4">🚀</div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Third Year</h3>
-                        <p class="text-gray-600">Advanced Topics</p>
-                        <div class="mt-4 text-sm text-gray-500">
-                            <p>Semester 1: 20.5 Credits</p>
-                            <p>Semester 2: 19.5 Credits</p>
+        function showSemester(year, semester) {
+            currentYear = year;
+            currentSemester = semester;
+            document.getElementById('year-view').classList.add('hidden');
+            document.getElementById('semester-view').classList.remove('hidden');
+            document.getElementById('course-view').classList.add('hidden');
+            
+            const yearNames = ['', 'First', 'Second', 'Third', 'Fourth'];
+            document.getElementById('semester-title').textContent = `${yearNames[year]} Year - Semester ${semester}`;
+            
+            const coursesGrid = document.getElementById('courses-grid');
+            const courses = curriculum[year][semester];
+            
+            coursesGrid.innerHTML = courses.map(course => `
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover cursor-pointer" onclick="showCourse('${course.code}', '${course.name}')">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">${course.name}</h3>
+                            <p class="text-gray-600 text-sm mb-2">${course.code}</p>
+                            <div class="flex items-center">
+                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                                    ${course.credits} Credits
+                                </span>
+                            </div>
                         </div>
+                        <div class="text-2xl ml-4">📄</div>
                     </div>
                 </div>
+            `).join('');
+        }
 
-                <!-- Fourth Year -->
-                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="showYear(4)">
-                    <div class="text-center">
-                        <div class="text-5xl mb-4">🏆</div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Fourth Year</h3>
-                        <p class="text-gray-600">Specialization</p>
-                        <div class="mt-4 text-sm text-gray-500">
-                            <p>Semester 1: 19.5 Credits</p>
-                            <p>Semester 2: 19.0 Credits</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        function showCourse(courseCode, courseName) {
+            currentCourse = courseCode;
+            document.getElementById('semester-view').classList.add('hidden');
+            document.getElementById('course-view').classList.remove('hidden');
+            
+            document.getElementById('course-title').textContent = courseName;
+        }
 
-        <!-- First Year Resources -->
-        <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer mt-6">
-            <div class="text-center">
-                <div class="text-5xl mb-4">📚</div>
-                <h3 class="text-xl font-bold text-gray-800">First Year Resources</h3>
-                <p class="text-gray-600 mt-2">Books, Notes, Previous Questions</p>
-            </div>
-            <div class="flex justify-between items-center mt-4">
-                <!-- Books Link -->
-                <a href="https://drive.google.com/drive/folders/1K_obv2LUf7qpFCXDGj6bp0dAi-DytQrx?usp=drive_link" target="_blank" 
-                   class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold transition-colors duration-300 flex items-center space-x-2">
-                    <span>📘</span>
-                    <span>Books</span>
-                </a>
-                <!-- Notes Link -->
-                <a href="https://drive.google.com/drive/folders/1WwT0lgUm-LIxwUrzHmpdiR0HE6efXRM6?usp=drive_link" target="_blank"
-                   class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-semibold transition-colors duration-300 flex items-center space-x-2">
-                    <span>📝</span>
-                    <span>Notes</span>
-                </a>
-                <!-- Previous Questions Link -->
-                <a href="https://drive.google.com/drive/folders/1-WL990uxd5Nwg9fQG-YxCRGwLbWaTDGS?usp=sharing" target="_blank"
-                   class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-semibold transition-colors duration-300 flex items-center space-x-2">
-                    <span>❓</span>
-                    <span>Previous Questions</span>
-                </a>
-            </div>
-        </div>
-    </main>
-
-    <script src="script.js"></script> <!-- Link to the external JavaScript file -->
-</body>
+        function openDriveLink(type) {
+            // Course-specific Google Drive links
+            const courseLinks = {
+                'SWE0613-1121': {
+                    books: 'https://drive.google.com/drive/folders/1K_obv2LUf7qpFCXDGj6bp0dAi-DytQrx?usp=drive_link',
+                    notes: 'https://drive.google.com/drive/folders/1WwT0lgUm-LIxwUrzHmpdiR0HE6efXRM6?usp=drive_link',
+                    questions: 'https://drive.google.com/drive/folders/1-WL990uxd5Nwg9fQG-YxCRGwLbWaTDGS?usp=sharing'
+                }
+            };
+            
+            // Default links for courses without specific folders
+            const defaultLinks = {
+                books: 'https://drive.google.com/drive/folders/your-books-folder-id',
+                notes: 'https://drive.google.com/drive/folders/your-notes-folder-id',
+                questions: 'https://drive.google.com/drive/folders/your-questions-folder-id'
+            };
+            
+            const url = courseLinks[currentCourse] ? courseLinks[currentCourse][type] : defaultLinks[type];
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9828602cf634a494',t:'MTc1ODQ0NTI2My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
