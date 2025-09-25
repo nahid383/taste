@@ -538,6 +538,25 @@
                         </div>
                     </div>
                 `;
+            } else if (currentCourse === 'ENG0231-1102W') {
+                // Special layout for English Language Lab with Assignment and Grammar folders
+                courseMaterials.innerHTML = `
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openEnglishLabLink('assignment')">
+                        <div class="text-center">
+                            <div class="text-5xl mb-4">📝</div>
+                            <h3 class="text-xl font-bold text-gray-800">Assignment</h3>
+                            <p class="text-gray-600 mt-2">Lab Assignments and Tasks</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openEnglishLabLink('grammar')">
+                        <div class="text-center">
+                            <div class="text-5xl mb-4">📖</div>
+                            <h3 class="text-xl font-bold text-gray-800">Grammar</h3>
+                            <p class="text-gray-600 mt-2">Grammar Rules and Exercises</p>
+                        </div>
+                    </div>
+                `;
             } else {
                 // Regular layout for all other courses
                 courseMaterials.innerHTML = `
@@ -580,6 +599,17 @@
             }
         }
 
+        function openEnglishLabLink(type) {
+            const englishLabLinks = {
+                'assignment': 'https://drive.google.com/drive/folders/1LUsjgvfxzvIbyYvIS8yiMzJ6zTaEVlhb?usp=drive_link',
+                'grammar': 'https://drive.google.com/drive/folders/1aBtcqFRfFih6uF7bU4l2l_Q_w6_rcN95?usp=drive_link'
+            };
+            
+            if (englishLabLinks[type]) {
+                window.open(englishLabLinks[type], '_blank', 'noopener,noreferrer');
+            }
+        }
+
         function openDriveLink(type) {
             const courseLinks = {
                 'SWE0613-1121': {
@@ -596,6 +626,16 @@
                     books: 'https://drive.google.com/drive/folders/1soVr5Pvm0XxVbdmZQ8__mi4i0KzvRcif?usp=drive_link',
                     notes: 'https://drive.google.com/drive/folders/1IoE0CkqcSFJ6lIto15QrfPrj-Dt4nm16?usp=drive_link',
                     questions: 'https://drive.google.com/drive/folders/1QzF0LyyKm91h_A-g4v76QiZduiLyvamO?usp=drive_link'
+                },
+                'MAT0541-1105W': {
+                    books: 'https://drive.google.com/drive/folders/1w3a5qZ0MNjGQEjiSAo5KzS0XzRC1kpxO?usp=drive_link',
+                    notes: 'https://drive.google.com/drive/folders/1J8vGdQ5zajUT506Ypz7d-lNn-PFsdkfP?usp=drive_link',
+                    questions: 'https://drive.google.com/drive/folders/14BRzI_2bt9uvOjjX-JnBCZo9WrJ8HTvS?usp=drive_link'
+                },
+                'ENG0231-1101W': {
+                    books: 'https://drive.google.com/drive/folders/1PucU0pRUebH7ZiZNrVfF8fd_xuHrREbv?usp=sharing',
+                    notes: 'https://drive.google.com/drive/folders/1vmb0OuiGiEZgIcPq-rVKZ8lZucWrcvie?usp=drive_link',
+                    questions: 'https://drive.google.com/drive/folders/1ZE6CrBOWFpN5SkSXCQOxnaPgLN-f6_1k?usp=drive_link'
                 }
             };
             
@@ -652,5 +692,5 @@
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'984a4f33c7a14ea2',t:'MTc1ODgwMTA4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'984a5be716444ea2',t:'MTc1ODgwMTYwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
