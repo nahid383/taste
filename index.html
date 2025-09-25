@@ -101,8 +101,11 @@
                     <div class="text-right ml-auto">
                         <p class="text-lg">Welcome, <span id="welcomeName" class="font-semibold"></span></p>
                         <p class="text-sm opacity-75">Reg: <span id="welcomeReg"></span></p>
-                        <button onclick="logout()" class="mt-2 bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-sm transition-colors">
+                        <button onclick="logout()" class="mt-2 bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-sm transition-colors mr-2">
                             Logout
+                        </button>
+                        <button onclick="showLogs()" class="mt-2 bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-sm transition-colors">
+                            View Logs
                         </button>
                     </div>
                 </div>
@@ -230,6 +233,64 @@
                     <!-- Course materials will be populated here -->
                 </div>
             </div>
+
+            <!-- Logs View -->
+            <div id="logs-view" class="hidden fade-in">
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center">
+                        <button onclick="showMain()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg mr-4 transition-colors duration-300">
+                            ← Back
+                        </button>
+                        <h2 class="text-3xl font-bold text-gray-800">User Activity Logs</h2>
+                    </div>
+                    <div class="flex space-x-4">
+                        <button onclick="UserLogger.exportLogs()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                            📥 Export CSV
+                        </button>
+                        <button onclick="clearLogs()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors">
+                            🗑️ Clear Logs
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="mb-4 flex justify-between items-center">
+                        <div class="flex space-x-4">
+                            <input type="text" id="logSearch" placeholder="Search logs..." 
+                                   class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <select id="logFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">All Activities</option>
+                                <option value="login">Login</option>
+                                <option value="logout">Logout</option>
+                                <option value="navigation">Navigation</option>
+                                <option value="course_access">Course Access</option>
+                                <option value="file_access">File Access</option>
+                            </select>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            Total Logs: <span id="logCount">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-3 text-left font-medium text-gray-700">Timestamp</th>
+                                    <th class="px-4 py-3 text-left font-medium text-gray-700">User</th>
+                                    <th class="px-4 py-3 text-left font-medium text-gray-700">Registration</th>
+                                    <th class="px-4 py-3 text-left font-medium text-gray-700">Action</th>
+                                    <th class="px-4 py-3 text-left font-medium text-gray-700">Details</th>
+                                    <th class="px-4 py-3 text-left font-medium text-gray-700">Course</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logsTableBody" class="divide-y divide-gray-200">
+                                <!-- Logs will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -330,8 +391,121 @@
             }
         };
 
+        // User activity logging system
+        const UserLogger = {
+            logs: [],
+            
+            // Initialize logging system
+            init() {
+                this.loadLogs();
+                this.logActivity('system', 'Page loaded');
+            },
+            
+            // Log user activity
+            logActivity(action, details = '', courseCode = '') {
+                const timestamp = new Date().toISOString();
+                const userName = sessionStorage.getItem('studentName') || 'Anonymous';
+                const userReg = sessionStorage.getItem('registrationNumber') || 'N/A';
+                
+                const logEntry = {
+                    id: Date.now() + Math.random(),
+                    timestamp,
+                    userName,
+                    userReg,
+                    action,
+                    details,
+                    courseCode,
+                    sessionId: this.getSessionId()
+                };
+                
+                this.logs.push(logEntry);
+                this.saveLogs();
+                
+                // Also log to console for debugging
+                console.log('User Activity:', logEntry);
+            },
+            
+            // Get or create session ID
+            getSessionId() {
+                let sessionId = sessionStorage.getItem('sessionId');
+                if (!sessionId) {
+                    sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    sessionStorage.setItem('sessionId', sessionId);
+                }
+                return sessionId;
+            },
+            
+            // Save logs to localStorage
+            saveLogs() {
+                try {
+                    localStorage.setItem('userActivityLogs', JSON.stringify(this.logs));
+                } catch (e) {
+                    console.warn('Could not save logs to localStorage:', e);
+                }
+            },
+            
+            // Load logs from localStorage
+            loadLogs() {
+                try {
+                    const savedLogs = localStorage.getItem('userActivityLogs');
+                    if (savedLogs) {
+                        this.logs = JSON.parse(savedLogs);
+                    }
+                } catch (e) {
+                    console.warn('Could not load logs from localStorage:', e);
+                    this.logs = [];
+                }
+            },
+            
+            // Get logs for specific user
+            getUserLogs(regNumber) {
+                return this.logs.filter(log => log.userReg === regNumber);
+            },
+            
+            // Get all logs (for admin view)
+            getAllLogs() {
+                return this.logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            },
+            
+            // Export logs as CSV
+            exportLogs() {
+                const headers = ['Timestamp', 'Name', 'Registration', 'Action', 'Details', 'Course Code', 'Session ID'];
+                const csvContent = [
+                    headers.join(','),
+                    ...this.logs.map(log => [
+                        log.timestamp,
+                        `"${log.userName}"`,
+                        log.userReg,
+                        `"${log.action}"`,
+                        `"${log.details}"`,
+                        log.courseCode,
+                        log.sessionId
+                    ].join(','))
+                ].join('\n');
+                
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `user_activity_logs_${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            },
+            
+            // Clear old logs (keep last 1000 entries)
+            cleanupLogs() {
+                if (this.logs.length > 1000) {
+                    this.logs = this.logs.slice(-1000);
+                    this.saveLogs();
+                }
+            }
+        };
+
         // Initialize everything when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize logging system
+            UserLogger.init();
+            
             // Initialize login form
             const loginForm = document.getElementById('loginForm');
             if (loginForm) {
@@ -346,6 +520,9 @@
                         sessionStorage.setItem('studentName', name);
                         sessionStorage.setItem('registrationNumber', regNumber);
                         
+                        // Log login activity
+                        UserLogger.logActivity('login', `User logged in: ${name} (${regNumber})`);
+                        
                         // Show main app
                         document.getElementById('login-page').classList.add('hidden');
                         document.getElementById('main-app').classList.remove('hidden');
@@ -353,6 +530,9 @@
                         // Update welcome message
                         document.getElementById('welcomeName').textContent = name;
                         document.getElementById('welcomeReg').textContent = regNumber;
+                        
+                        // Log main page access
+                        UserLogger.logActivity('navigation', 'Accessed main dashboard');
                     }
                 });
             }
@@ -366,13 +546,23 @@
                 document.getElementById('main-app').classList.remove('hidden');
                 document.getElementById('welcomeName').textContent = name;
                 document.getElementById('welcomeReg').textContent = regNumber;
+                
+                // Log returning user
+                UserLogger.logActivity('session_resume', `Returning user: ${name} (${regNumber})`);
             }
+            
+            // Cleanup old logs periodically
+            UserLogger.cleanupLogs();
         });
 
         // Logout functionality
         function logout() {
+            // Log logout activity before clearing session
+            UserLogger.logActivity('logout', 'User logged out');
+            
             sessionStorage.removeItem('studentName');
             sessionStorage.removeItem('registrationNumber');
+            sessionStorage.removeItem('sessionId');
             
             document.getElementById('main-app').classList.add('hidden');
             document.getElementById('login-page').classList.remove('hidden');
@@ -400,6 +590,9 @@
             
             const yearNames = ['', 'First', 'Second', 'Third', 'Fourth'];
             document.getElementById('year-title').textContent = `${yearNames[year]} Year`;
+            
+            // Log navigation activity
+            UserLogger.logActivity('navigation', `Viewed ${yearNames[year]} Year`);
             
             const semesterGrid = document.getElementById('semester-grid');
             semesterGrid.innerHTML = `
@@ -435,6 +628,9 @@
             
             const yearNames = ['', 'First', 'Second', 'Third', 'Fourth'];
             document.getElementById('semester-title').textContent = `${yearNames[year]} Year - Semester ${semester}`;
+            
+            // Log semester navigation
+            UserLogger.logActivity('navigation', `Viewed ${yearNames[year]} Year - Semester ${semester}`);
             
             const coursesGrid = document.getElementById('courses-grid');
             const courses = curriculum[year][semester];
@@ -507,6 +703,9 @@
             document.getElementById('course-view').classList.remove('hidden');
             
             document.getElementById('course-title').textContent = courseName;
+            
+            // Log course access
+            UserLogger.logActivity('course_access', `Accessed course: ${courseName}`, courseCode);
             
             // Update course materials display - customize for lab courses
             const courseMaterials = document.getElementById('course-materials');
@@ -595,6 +794,8 @@
             };
             
             if (eeeLabLinks[type]) {
+                // Log file access
+                UserLogger.logActivity('file_access', `Accessed EEE Lab ${type.replace('-', ' ')}`, currentCourse);
                 window.open(eeeLabLinks[type], '_blank', 'noopener,noreferrer');
             }
         }
@@ -606,6 +807,8 @@
             };
             
             if (englishLabLinks[type]) {
+                // Log English lab access
+                UserLogger.logActivity('file_access', `Accessed English Lab ${type}`, currentCourse);
                 window.open(englishLabLinks[type], '_blank', 'noopener,noreferrer');
             }
         }
@@ -647,6 +850,11 @@
             };
             
             const url = courseLinks[currentCourse] ? courseLinks[currentCourse][type] : defaultLinks[type];
+            
+            // Log file access
+            const typeNames = { books: 'Books', notes: 'Notes', questions: 'Previous Questions' };
+            UserLogger.logActivity('file_access', `Accessed ${typeNames[type] || type}`, currentCourse);
+            
             window.open(url, '_blank', 'noopener,noreferrer');
         }
 
@@ -660,7 +868,97 @@
             };
             
             if (yearQuestions[year]) {
+                // Log year question access
+                UserLogger.logActivity('file_access', `Accessed ${year} question papers`);
                 window.open(yearQuestions[year], '_blank', 'noopener,noreferrer');
+            }
+        }
+
+        // Log management functions
+        function showLogs() {
+            // Hide all other views
+            document.getElementById('main-view').classList.add('hidden');
+            document.getElementById('year-view').classList.add('hidden');
+            document.getElementById('semester-view').classList.add('hidden');
+            document.getElementById('course-view').classList.add('hidden');
+            document.getElementById('logs-view').classList.remove('hidden');
+            
+            // Log viewing logs activity
+            UserLogger.logActivity('admin', 'Viewed activity logs');
+            
+            // Populate logs table
+            populateLogsTable();
+            
+            // Add event listeners for search and filter
+            document.getElementById('logSearch').addEventListener('input', filterLogs);
+            document.getElementById('logFilter').addEventListener('change', filterLogs);
+        }
+
+        function populateLogsTable(filteredLogs = null) {
+            const logs = filteredLogs || UserLogger.getAllLogs();
+            const tbody = document.getElementById('logsTableBody');
+            const logCount = document.getElementById('logCount');
+            
+            logCount.textContent = logs.length;
+            
+            tbody.innerHTML = logs.map(log => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-3 text-gray-900">${new Date(log.timestamp).toLocaleString()}</td>
+                    <td class="px-4 py-3 text-gray-900">${log.userName}</td>
+                    <td class="px-4 py-3 text-gray-600">${log.userReg}</td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full ${getActionBadgeClass(log.action)}">
+                            ${log.action}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-gray-600 max-w-xs truncate" title="${log.details}">${log.details}</td>
+                    <td class="px-4 py-3 text-gray-600">${log.courseCode || '-'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function getActionBadgeClass(action) {
+            const classes = {
+                'login': 'bg-green-100 text-green-800',
+                'logout': 'bg-red-100 text-red-800',
+                'navigation': 'bg-blue-100 text-blue-800',
+                'course_access': 'bg-purple-100 text-purple-800',
+                'file_access': 'bg-orange-100 text-orange-800',
+                'admin': 'bg-gray-100 text-gray-800',
+                'system': 'bg-yellow-100 text-yellow-800'
+            };
+            return classes[action] || 'bg-gray-100 text-gray-800';
+        }
+
+        function filterLogs() {
+            const searchTerm = document.getElementById('logSearch').value.toLowerCase();
+            const filterAction = document.getElementById('logFilter').value;
+            
+            let filteredLogs = UserLogger.getAllLogs();
+            
+            if (filterAction) {
+                filteredLogs = filteredLogs.filter(log => log.action === filterAction);
+            }
+            
+            if (searchTerm) {
+                filteredLogs = filteredLogs.filter(log => 
+                    log.userName.toLowerCase().includes(searchTerm) ||
+                    log.userReg.toLowerCase().includes(searchTerm) ||
+                    log.details.toLowerCase().includes(searchTerm) ||
+                    log.courseCode.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            populateLogsTable(filteredLogs);
+        }
+
+        function clearLogs() {
+            if (confirm('Are you sure you want to clear all logs? This action cannot be undone.')) {
+                UserLogger.logs = [];
+                UserLogger.saveLogs();
+                UserLogger.logActivity('admin', 'Cleared all activity logs');
+                populateLogsTable();
+                alert('All logs have been cleared.');
             }
         }
     </script>
@@ -692,5 +990,5 @@
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'984a5be716444ea2',t:'MTc1ODgwMTYwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'984a69cd162d3378',t:'MTc1ODgwMjE3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
