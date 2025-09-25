@@ -508,45 +508,21 @@
             
             document.getElementById('course-title').textContent = courseName;
             
-            // Course-specific Google Drive links
-            const courseLinks = {
-                'SWE0613-1121': {
-                    books: 'https://drive.google.com/drive/folders/1K_obv2LUf7qpFCXDGj6bp0dAi-DytQrx?usp=drive_link',
-                    notes: 'https://drive.google.com/drive/folders/1WwT0lgUm-LIxwUrzHmpdiR0HE6efXRM6?usp=drive_link',
-                    questions: 'https://drive.google.com/drive/folders/1-WL990uxd5Nwg9fQG-YxCRGwLbWaTDGS?usp=sharing'
-                },
-                'SWE0541-1123': {
-                    books: 'https://drive.google.com/drive/folders/1-nHSblj2qIA2HjUb-CvCDrno3rSq23PG?usp=sharing',
-                    notes: 'https://drive.google.com/drive/folders/1MBxWRbY986QI_HUN68NdhWODCqG5aeKC?usp=drive_link',
-                    questions: 'https://drive.google.com/drive/folders/1b4Gj3PcuyDpkypidrmFnPXoKAQTscQDz?usp=drive_link'
-                },
-                'EEE0712-1101W': {
-                    books: 'https://drive.google.com/drive/folders/1soVr5Pvm0XxVbdmZQ8__mi4i0KzvRcif?usp=drive_link',
-                    notes: 'https://drive.google.com/drive/folders/1IoE0CkqcSFJ6lIto15QrfPrj-Dt4nm16?usp=drive_link',
-                    questions: 'https://drive.google.com/drive/folders/1QzF0LyyKm91h_A-g4v76QiZduiLyvamO?usp=drive_link'
-                },
-                'EEE0712-1102W': {
-                    books: 'https://drive.google.com/drive/folders/1bIVcp3BoLEF_RQuBAlNTNtPdk2-89_eY?usp=drive_link',
-                    notes: 'https://drive.google.com/drive/folders/10QOGp_8xOFkKHuTDZHqttRxYoxvVuU-R?usp=drive_link',
-                    questions: 'https://drive.google.com/drive/folders/1YoLn3jtVgj7ryvTMpG7FT34EU9E9iCKO?usp=drive_link'
-                }
-            };
-            
             // Update course materials display - customize for lab courses
             const courseMaterials = document.getElementById('course-materials');
             
             if (currentCourse === 'EEE0712-1102W') {
-                // Special layout for EEE Lab course
+                // Special layout for EEE Lab course with the three folders
                 courseMaterials.innerHTML = `
-                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openDriveLink('books')">
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openEEELabLink('lab-report')">
                         <div class="text-center">
-                            <div class="text-5xl mb-4">🔬</div>
-                            <h3 class="text-xl font-bold text-gray-800">EEE Lab</h3>
-                            <p class="text-gray-600 mt-2">Lab Manuals and Experiments</p>
+                            <div class="text-5xl mb-4">📋</div>
+                            <h3 class="text-xl font-bold text-gray-800">Lab Report</h3>
+                            <p class="text-gray-600 mt-2">Lab Reports and Documentation</p>
                         </div>
                     </div>
                     
-                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openDriveLink('notes')">
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openEEELabLink('class-slide')">
                         <div class="text-center">
                             <div class="text-5xl mb-4">📊</div>
                             <h3 class="text-xl font-bold text-gray-800">Class Slide</h3>
@@ -554,7 +530,7 @@
                         </div>
                     </div>
                     
-                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openDriveLink('questions')">
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openEEELabLink('pspice-workspace')">
                         <div class="text-center">
                             <div class="text-5xl mb-4">⚡</div>
                             <h3 class="text-xl font-bold text-gray-800">PSpice Workspace</h3>
@@ -592,6 +568,18 @@
             }
         }
 
+        function openEEELabLink(type) {
+            const eeeLabLinks = {
+                'lab-report': 'https://drive.google.com/drive/folders/1bIVcp3BoLEF_RQuBAlNTNtPdk2-89_eY?usp=drive_link',
+                'class-slide': 'https://drive.google.com/drive/folders/10QOGp_8xOFkKHuTDZHqttRxYoxvVuU-R?usp=drive_link',
+                'pspice-workspace': 'https://drive.google.com/drive/folders/1YoLn3jtVgj7ryvTMpG7FT34EU9E9iCKO?usp=drive_link'
+            };
+            
+            if (eeeLabLinks[type]) {
+                window.open(eeeLabLinks[type], '_blank', 'noopener,noreferrer');
+            }
+        }
+
         function openDriveLink(type) {
             const courseLinks = {
                 'SWE0613-1121': {
@@ -608,11 +596,6 @@
                     books: 'https://drive.google.com/drive/folders/1soVr5Pvm0XxVbdmZQ8__mi4i0KzvRcif?usp=drive_link',
                     notes: 'https://drive.google.com/drive/folders/1IoE0CkqcSFJ6lIto15QrfPrj-Dt4nm16?usp=drive_link',
                     questions: 'https://drive.google.com/drive/folders/1QzF0LyyKm91h_A-g4v76QiZduiLyvamO?usp=drive_link'
-                },
-                'EEE0712-1102W': {
-                    books: 'https://drive.google.com/drive/folders/1bIVcp3BoLEF_RQuBAlNTNtPdk2-89_eY?usp=drive_link',
-                    notes: 'https://drive.google.com/drive/folders/10QOGp_8xOFkKHuTDZHqttRxYoxvVuU-R?usp=drive_link',
-                    questions: 'https://drive.google.com/drive/folders/1YoLn3jtVgj7ryvTMpG7FT34EU9E9iCKO?usp=drive_link'
                 }
             };
             
@@ -641,5 +624,33 @@
             }
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9849745343f7a48b',t:'MTc1ODc5MjExOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .login-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'984a4f33c7a14ea2',t:'MTc1ODgwMTA4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
